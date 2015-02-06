@@ -1,0 +1,12 @@
+{
+  "name": "yt-audio-to-podcast",
+  "version": "0.1.0",
+  "description": "Subscribe to a youtube channel as a podcast",
+  "author": "Daniel Gross <daniel.gross.2@gmail.com>",
+  "dependencies": {
+    "ytdl-core": "0.4.1"
+  },
+  "private": true,
+  "license": "MIT"
+}
+  

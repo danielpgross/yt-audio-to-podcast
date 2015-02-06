@@ -4,9 +4,9 @@
   "description": "Subscribe to a youtube channel as a podcast",
   "author": "Daniel Gross <daniel.gross.2@gmail.com>",
   "dependencies": {
+    "googleapis": "^1.1.1",
     "ytdl-core": "0.4.1"
   },
   "private": true,
   "license": "MIT"
 }
-  

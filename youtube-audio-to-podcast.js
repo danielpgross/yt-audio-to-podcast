@@ -1,21 +1,5 @@
 var m = module.exports = {};
 
-m.getChannelIdByUsername = function(username, cb) {
-	var google = require('googleapis');
-	var config = require('nodejs-config')(
-		__dirname
-	);
-
-	var yt = google.youtube('v3');
-	return yt.channels.list({
-		part: 'id',
-		forUsername: username,
-		key: config.get('local.youtubeApiKey')
-	}, function(err, list) {
-		cb(list.items[0].id);
-	});
-}
-
 m.getPodcastItemsByChannelId = function(channelId, cb) {
 	var google = require('googleapis');
 	var config = require('nodejs-config')(
@@ -53,7 +37,7 @@ m.getPodcastItemsByChannelId = function(channelId, cb) {
 	});
 }
 
-m.getChannelInfoByChannelId = function(channelId, feedUrl, cb) {
+m.getChannelInfoByUsername = function(username, feedUrl, cb) {
 	var google = require('googleapis');
 	var config = require('nodejs-config')(
 		__dirname
@@ -62,17 +46,22 @@ m.getChannelInfoByChannelId = function(channelId, feedUrl, cb) {
 
 	return yt.channels.list({
 		part: 'id,snippet',
-		id: channelId,
+		forUsername: username,
 		key: config.get('local.youtubeApiKey')
 	}, function(err, list) {
 		var channel = list.items[0];
-		cb({
+		var ret = {};
+
+		if (!channel) return;
+
+		ret[channel.id] = {
 			title: channel.snippet.title,
 			description: channel.snippet.description,
 			feed_url: feedUrl,
 			site_url: "http://youtube.com/channel/"+channel.id,
 			image_url: channel.snippet.thumbnails.default.url,
-		});
+		};
+		cb(ret);
 	});
 }
 
@@ -86,4 +75,15 @@ m.getPodcastRssXml = function(info, items) {
 	});
 
 	return feed.xml();
+}
+
+m.getPodcastRssXmlByUsername = function(username, feedUrl, cb) {
+	m.getChannelInfoByUsername(username, feedUrl, function(info) {
+		// Get the channel id
+		for (var channelId in info) { continue; }
+
+		m.getPodcastItemsByChannelId(channelId, function(items) {
+			cb(m.getPodcastRssXml(info[channelId], items));
+		});
+	});
 }

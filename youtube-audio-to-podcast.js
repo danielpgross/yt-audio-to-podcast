@@ -39,7 +39,7 @@ m.getPodcastItemsByChannelId = function(channelId, cb) {
 		items = _.map(items, function(item) {
 			return {
 				title: item.snippet.title,
-				desc: item.snippet.description,
+				description: item.snippet.description,
 				url: 'http://youtu.be/'+item.id.videoId,
 				date: item.snippet.publishedAt,
 			};
@@ -53,7 +53,7 @@ m.getPodcastItemsByChannelId = function(channelId, cb) {
 	});
 }
 
-m.getChannelInfoByChannelId = function(channelId, cb) {
+m.getChannelInfoByChannelId = function(channelId, feedUrl, cb) {
 	var google = require('googleapis');
 	var config = require('nodejs-config')(
 		__dirname
@@ -69,9 +69,21 @@ m.getChannelInfoByChannelId = function(channelId, cb) {
 		cb({
 			title: channel.snippet.title,
 			description: channel.snippet.description,
-			feed_url: '',
+			feed_url: feedUrl,
 			site_url: "http://youtube.com/channel/"+channel.id,
 			image_url: channel.snippet.thumbnails.default.url,
 		});
 	});
+}
+
+m.getPodcastRssXml = function(info, items) {
+	var rss = require('rss');
+	var _ = require('underscore');
+
+	var feed = new rss(info);
+	_.each(items, function(item) {
+		feed.item(item);
+	});
+
+	return feed.xml();
 }

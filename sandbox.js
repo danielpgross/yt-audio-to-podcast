@@ -5,8 +5,10 @@ var ytAudioToPodcast = require('./youtube-audio-to-podcast.js');
 var channelUsername = process.argv[2];
 console.log('Creating podcast RSS for '+channelUsername);
 
-ytAudioToPodcast.getChannelIdByUsername(channelUsername, function(err, list) {
-	var channelId = list.items[0].id;
+ytAudioToPodcast.getChannelIdByUsername(channelUsername, function(channelId) {
 	console.log('Channel ID: '+channelId);
-});
 
+	ytAudioToPodcast.getPodcastItemsByChannelId(channelId, function(items) {
+		console.log("Feed items: \n"+JSON.stringify(items, null, 2));
+	})
+});

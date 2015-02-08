@@ -52,3 +52,26 @@ m.getPodcastItemsByChannelId = function(channelId, cb) {
 		cb(items);
 	});
 }
+
+m.getChannelInfoByChannelId = function(channelId, cb) {
+	var google = require('googleapis');
+	var config = require('nodejs-config')(
+		__dirname
+	);
+	var yt = google.youtube('v3');
+
+	return yt.channels.list({
+		part: 'id,snippet',
+		id: channelId,
+		key: config.get('local.youtubeApiKey')
+	}, function(err, list) {
+		var channel = list.items[0];
+		cb({
+			title: channel.snippet.title,
+			description: channel.snippet.description,
+			feed_url: '',
+			site_url: "http://youtube.com/channel/"+channel.id,
+			image_url: channel.snippet.thumbnails.default.url,
+		});
+	});
+}

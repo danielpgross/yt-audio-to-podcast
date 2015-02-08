@@ -10,5 +10,9 @@ ytAudioToPodcast.getChannelIdByUsername(channelUsername, function(channelId) {
 
 	ytAudioToPodcast.getPodcastItemsByChannelId(channelId, function(items) {
 		console.log("Feed items: \n"+JSON.stringify(items, null, 2));
-	})
+
+		ytAudioToPodcast.getChannelInfoByChannelId(channelId, function(info) {
+			console.log('Channel info :'+JSON.stringify(info, null, 2));
+		});
+	});
 });

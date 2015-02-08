@@ -13,10 +13,15 @@ var server = http.createServer(function(request, response) {
 	} else {
 		response.writeHead(200, {"Content-Type": "application/rss+xml"});
 
-		ytAudioToPodcast.getPodcastRssXmlByUsername(username, request.url, function(xml) {
-			response.write(xml);
-			response.end();
-		});
+		ytAudioToPodcast.getPodcastRssXmlByUsername(
+			username, 
+			request.url,
+			'http://'+request.headers.host+'/'+username+'/[videoId].mp3',
+			function(xml) {
+				response.write(xml);
+				response.end();
+			}
+		);
 	}
 });
 

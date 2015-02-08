@@ -1,6 +1,6 @@
 var m = module.exports = {};
 
-m.getPodcastItemsByChannelId = function(channelId, cb) {
+m.getPodcastItemsByChannelId = function(channelId, enclosureUrlTpl, cb) {
 	var google = require('googleapis');
 	var config = require('nodejs-config')(
 		__dirname
@@ -26,6 +26,10 @@ m.getPodcastItemsByChannelId = function(channelId, cb) {
 				description: item.snippet.description,
 				url: 'http://youtu.be/'+item.id.videoId,
 				date: item.snippet.publishedAt,
+				enclosure: {
+					url: enclosureUrlTpl.replace('[videoId]', item.id.videoId),
+					type: 'audio/mpeg',
+				}
 			};
 		});
 		// Sort by date desc
@@ -77,12 +81,12 @@ m.getPodcastRssXml = function(info, items) {
 	return feed.xml();
 }
 
-m.getPodcastRssXmlByUsername = function(username, feedUrl, cb) {
+m.getPodcastRssXmlByUsername = function(username, feedUrl, enclosureUrlTpl, cb) {
 	m.getChannelInfoByUsername(username, feedUrl, function(info) {
 		// Get the channel id
 		for (var channelId in info) { continue; }
 
-		m.getPodcastItemsByChannelId(channelId, function(items) {
+		m.getPodcastItemsByChannelId(channelId, enclosureUrlTpl, function(items) {
 			cb(m.getPodcastRssXml(info[channelId], items));
 		});
 	});

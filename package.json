@@ -4,6 +4,7 @@
   "description": "Subscribe to a youtube channel as a podcast",
   "author": "Daniel Gross <daniel.gross.2@gmail.com>",
   "dependencies": {
+    "fluent-ffmpeg": "^2.0.0-rc3",
     "googleapis": "^1.1.1",
     "nodejs-config": "^1.0.0",
     "rss": "^1.1.1",

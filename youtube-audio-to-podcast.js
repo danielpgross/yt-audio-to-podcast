@@ -91,3 +91,13 @@ m.getPodcastRssXmlByUsername = function(username, feedUrl, enclosureUrlTpl, cb) 
 		});
 	});
 }
+
+m.pipeAudioStreamByVideoId = function(videoId, outputStream) {
+	var ytdl = require('ytdl-core');
+	var ffmpeg = require('fluent-ffmpeg');
+
+	var vidUrl = 'http://www.youtube.com/watch?v='+videoId;
+	var videoStream = ytdl(vidUrl, {filter: 'audioonly'});
+
+	return ffmpeg().input(videoStream).format('mp3').pipe();
+}

@@ -12,9 +12,7 @@ var server = http.createServer(function(request, response) {
 	var filename = urlParts[2];
 	var mp3FileMatch = (filename || '').match(/(.*)\.mp3$/);
 
-	if (!username && !filename) {
-		response.writeHead(404);
-	} else if (filename == 'feed.xml') {
+	if (filename == 'feed.xml') {
 		response.writeHead(200, {"Content-Type": "application/rss+xml"});
 
 		ytAudioToPodcast.getPodcastRssXmlByUsername(
@@ -37,6 +35,10 @@ var server = http.createServer(function(request, response) {
 
 		var audioStream = ytAudioToPodcast.pipeAudioStreamByVideoId(videoId);
 		audioStream.pipe(response);
+	} else {
+		response.writeHead(404);
+		response.write('Invalid request');
+		response.end();
 	}
 });
 

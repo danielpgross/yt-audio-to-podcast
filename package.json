@@ -11,6 +11,5 @@
     "underscore": "^1.7.0",
     "ytdl-core": "0.4.1"
   },
-  "private": true,
   "license": "MIT"
 }

@@ -28,10 +28,9 @@ var server = http.createServer(function(request, response) {
 		);
 	} else if (mp3FileMatch) {
 		response.writeHead(200, {
-			"Content-Type": "application/octet-stream", 
+			"Content-Type": "audio/mpeg", 
 			'Transfer-Encoding':'chunked', 
 			'connection': 'keep-alive',
-			'Content-Disposition': 'attachment; filename="download.mp3"',
 			'Content-Transfer-Encoding': 'binary',
 		});
 		var videoId = mp3FileMatch[1];

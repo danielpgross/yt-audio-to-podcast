@@ -33,7 +33,7 @@ var server = http.createServer(function(request, response) {
 		});
 		var videoId = mp3FileMatch[1];
 
-		var audioStream = ytAudioToPodcast.pipeAudioStreamByVideoId(videoId);
+		var audioStream = ytAudioToPodcast.getAudioStreamByVideoId(videoId);
 		audioStream.pipe(response);
 	} else {
 		response.writeHead(404);

@@ -92,7 +92,7 @@ m.getPodcastRssXmlByUsername = function(username, feedUrl, enclosureUrlTpl, cb) 
 	});
 }
 
-m.pipeAudioStreamByVideoId = function(videoId, outputStream) {
+m.getAudioStreamByVideoId = function(videoId, outputStream) {
 	var ytdl = require('ytdl-core');
 	var ffmpeg = require('fluent-ffmpeg');
 

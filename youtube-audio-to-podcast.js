@@ -13,7 +13,7 @@ m.getPodcastItemsByChannelId = function(channelId, enclosureUrlTpl, cb) {
 		channelId: channelId,
 		key: config.get('local.youtubeApiKey'),
 		maxResults: 50,
-		orderBy: 'date', // descending date order is important for a podcast
+		order: 'date', // descending date order is important for a podcast
 		type: 'video',
 	}, function(err, list) {
 		// Pull out the relevant items for our podcast RSS
@@ -32,10 +32,6 @@ m.getPodcastItemsByChannelId = function(channelId, enclosureUrlTpl, cb) {
 				}
 			};
 		});
-		// Sort by date desc
-		items = _.sortBy(items, function(item) {
-			return item.date;
-		}).reverse();
 
 		cb(items);
 	});

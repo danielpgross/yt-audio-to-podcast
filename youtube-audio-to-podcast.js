@@ -37,6 +37,34 @@ m.getPodcastItemsByChannelId = function(channelId, enclosureUrlTpl, cb) {
 	});
 }
 
+m.getChannelInfoById = function(channelId, feedUrl, cb) {
+	var google = require('googleapis');
+	var config = require('nodejs-config')(
+		__dirname
+	);
+	var yt = google.youtube('v3');
+
+	return yt.channels.list({
+		part: 'id,snippet',
+		id: channelId,
+		key: config.get('local.youtubeApiKey')
+	}, function(err, list) {
+		var channel = list.items[0];
+		var ret = {};
+
+		if (!channel) return;
+
+		ret[channel.id] = {
+			title: channel.snippet.title,
+			description: channel.snippet.description,
+			feed_url: feedUrl,
+			site_url: "http://youtube.com/channel/"+channel.id,
+			image_url: channel.snippet.thumbnails.default.url,
+		};
+		cb(ret);
+	});
+}
+
 m.getChannelInfoByUsername = function(username, feedUrl, cb) {
 	var google = require('googleapis');
 	var config = require('nodejs-config')(
@@ -79,6 +107,17 @@ m.getPodcastRssXml = function(info, items) {
 
 m.getPodcastRssXmlByUsername = function(username, feedUrl, enclosureUrlTpl, cb) {
 	m.getChannelInfoByUsername(username, feedUrl, function(info) {
+		// Get the channel id
+		for (var channelId in info) { continue; }
+
+		m.getPodcastItemsByChannelId(channelId, enclosureUrlTpl, function(items) {
+			cb(m.getPodcastRssXml(info[channelId], items));
+		});
+	});
+}
+
+m.getPodcastRssXmlByChannelId = function(channelId, feedUrl, enclosureUrlTpl, cb) {
+	m.getChannelInfoById(channelId, feedUrl, function(info) {
 		// Get the channel id
 		for (var channelId in info) { continue; }
 

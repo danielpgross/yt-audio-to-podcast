@@ -24,7 +24,7 @@ var server = http.createServer(function(request, response) {
 				response.end();
 			}
 		);
-  } else if (filename == 'channel.xml') {
+	} else if (filename == 'channel.xml') {
 		response.writeHead(200, {"Content-Type": "application/rss+xml"});
 
 		ytAudioToPodcast.getPodcastRssXmlByChannelId(

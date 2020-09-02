@@ -5,7 +5,7 @@
   "author": "Daniel Gross <daniel.gross.2@gmail.com>",
   "dependencies": {
     "fluent-ffmpeg": "^2.0.0-rc3",
-    "googleapis": "^1.1.1",
+    "googleapis": "^59.0.0",
     "nodejs-config": "^1.0.0",
     "rss": "^1.1.1",
     "underscore": "^1.7.0",
